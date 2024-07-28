@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ALL CARS</title>
+</head>
+    <body>
+    <h1>ALL CARS</h1>
+
+    <div th:each="car : ${cars}">
+        <a th:href="@{/cars/{id}(id=${car.id})}"
+           th:text="${car.getModel() + ', ' + car.getColor() + ', ' + car.getYear()}">Car</a>
+    </div>
+
+    <br/>
+    <hr/>
+
+    <a href="/cars/new">create new car!</a>
+    </body>
+</html>
