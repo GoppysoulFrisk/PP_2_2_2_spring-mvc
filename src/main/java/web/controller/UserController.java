@@ -13,72 +13,72 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import web.dao.CarDAO;
-import web.models.Car;
+import web.dao.UserDAO;
+import web.models.User;
 
 import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/cars")
-public class CarController {
+public class UserController {
 
-    private final CarDAO carDAO;
+    private final UserDAO userDAO;
 
     @Autowired
-    public CarController(CarDAO carDAO) {
-        this.carDAO = carDAO;
+    public UserController(UserDAO userDAO) {
+        this.userDAO = userDAO;
     }
 
     @GetMapping()
     public String index(Model model, @RequestParam(value = "count", required = false) Integer count) {
         int _count;
-        if ((count == null) || (count > carDAO.countForIndex())) {
-            _count = carDAO.countForIndex();
+        if ((count == null) || (count > userDAO.countForIndex())) {
+            _count = userDAO.countForIndex();
         } else {
             _count = count;
         }
-        model.addAttribute("cars", carDAO.index(_count));
+        model.addAttribute("cars", userDAO.index(_count));
         return "cars/index";
     }
 
     @GetMapping("/{id}")
     public String show(@PathVariable int id, Model model) {
-        model.addAttribute("car", carDAO.show(id));
+        model.addAttribute("car", userDAO.show(id));
         return "cars/show";
     }
 
     @GetMapping("/new")
-    public String newCar(@ModelAttribute("car") Car car) {
+    public String newCar(@ModelAttribute("car") User user) {
         return "cars/new";
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("car") @Valid Car car, BindingResult bindingResult) {
+    public String create(@ModelAttribute("car") @Valid User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "cars/new";
         }
-        carDAO.save(car);
+        userDAO.save(user);
         return "redirect:/cars";
     }
 
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable int id, Model model) {
-        model.addAttribute("car", carDAO.show(id));
+        model.addAttribute("car", userDAO.show(id));
         return "cars/edit";
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("car") @Valid Car car, BindingResult bindingResult, @PathVariable int id) {
+    public String update(@ModelAttribute("car") @Valid User user, BindingResult bindingResult, @PathVariable int id) {
         if (bindingResult.hasErrors()) {
             return "cars/edit";
         }
-        carDAO.update(id, car);
+        userDAO.update(id, user);
         return "redirect:/cars";
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable int id) {
-        carDAO.delete(id);
+        userDAO.delete(id);
         return "redirect:/cars";
     }
 

@@ -7,18 +7,18 @@
 </head>
 
 <body>
-    <form th:method="PATCH" th:action="@{/cars/{id}(id=${car.getId()})}" th:object="${car}">
-        <label  for="model">enter model: </label>
-        <input type="text" th:field="*{model}" id="model">
-        <div style="color:red" th:if="${#fields.hasErrors('model')}" th:errors="*{model}">model err</div>
+    <form th:method="PATCH" th:action="@{/users/{id}(id=${user.getId()})}" th:object="${user}">
+        <label  for="name">enter model: </label>
+        <input type="text" th:field="*{name}" id="name">
+        <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name err</div>
         <br/>
-        <label  for="color">enter color: </label>
-        <input type="text" th:field="*{color}" id="color">
-        <div style="color:red" th:if="${#fields.hasErrors('color')}" th:errors="*{color}">color err</div>
+        <label  for="lastname">enter color: </label>
+        <input type="text" th:field="*{lastname}" id="lastname">
+        <div style="color:red" th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}">lastname err</div>
         <br/>
-        <label  for="year">enter year: </label>
-        <input type="number" th:field="*{year}" id="year">
-        <div style="color:red" th:if="${#fields.hasErrors('year')}" th:errors="*{year}">year err</div>
+        <label  for="age">enter year: </label>
+        <input type="number" th:field="*{age}" id="age">
+        <div style="color:red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">age err</div>
         <br/>
         <input type="submit" value="update!"/>
     </form>

@@ -8,14 +8,14 @@
     <body>
     <h1>ALL CARS</h1>
 
-    <div th:each="car : ${cars}">
-        <a th:href="@{/cars/{id}(id=${car.id})}"
-           th:text="${car.getModel() + ', ' + car.getColor() + ', ' + car.getYear()}">Car</a>
+    <div th:each="user : ${cars}">
+        <a th:href="@{/cars/{id}(id=${user.id})}"
+           th:text="${user.getModel() + ', ' + user.getColor() + ', ' + user.getYear()}">Car</a>
     </div>
 
     <br/>
     <hr/>
 
-    <a href="/cars/new">create new car!</a>
+    <a href="/cars/new">create new user!</a>
     </body>
 </html>

@@ -7,15 +7,15 @@
 </head>
     <body>
     <h1>CAR BY ID</h1>
-    <p th:text="${car.getModel()}">VALUE</p>
-    <p th:text="${car.getColor()}">VALUE</p>
-    <p th:text="${car.getYear()}">VALUE</p>
-    <p th:text="${car.getId()}">VALUE</p>
+    <p th:text="${user.getModel()}">VALUE</p>
+    <p th:text="${user.getColor()}">VALUE</p>
+    <p th:text="${user.getYear()}">VALUE</p>
+    <p th:text="${user.getId()}">VALUE</p>
     <a th:href="@{/cars}">all cars</a>
 
-    <a th:href="@{/cars/{id}/edit(id=${car.getId()})}">edit</a>
+    <a th:href="@{/cars/{id}/edit(id=${user.getId()})}">edit</a>
 
-    <form th:method="DELETE" th:action="@{/cars/{id}(id=${car.getId()})}">
+    <form th:method="DELETE" th:action="@{/cars/{id}(id=${user.getId()})}">
         <input type="submit" value="delete"/>
     </form>
     </body>

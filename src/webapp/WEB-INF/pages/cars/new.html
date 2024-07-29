@@ -6,7 +6,7 @@
     <title>NEW CAR</title>
 </head>
     <body>
-        <form th:method="POST" th:action="@{/cars}" th:object="${car}">
+        <form th:method="POST" th:action="@{/cars}" th:object="${user}">
             <label  for="model">enter model: </label>
             <input type="text" th:field="*{model}" id="model">
             <div style="color:red" th:if="${#fields.hasErrors('model')}" th:errors="*{model}">Model err</div>
