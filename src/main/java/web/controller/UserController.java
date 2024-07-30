@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import web.dao.UserDAO;
 import web.models.User;
 
-import javax.validation.Valid;
-
 @Controller
 @RequestMapping("/users")
 public class UserController {
@@ -50,7 +48,7 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public String create(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
+    public String create(@ModelAttribute("user") User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "users/new";
         }
@@ -65,7 +63,7 @@ public class UserController {
     }
 
     @PostMapping("/update")
-    public String update(@ModelAttribute("user") @Valid User user, BindingResult bindingResult, @RequestParam Long id) {
+    public String update(@ModelAttribute("user") User user, BindingResult bindingResult, @RequestParam Long id) {
         if (bindingResult.hasErrors()) {
             return "users/edit";
         }

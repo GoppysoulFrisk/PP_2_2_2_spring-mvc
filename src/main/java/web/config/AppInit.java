@@ -1,10 +1,6 @@
 package web.config;
 
-import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
-
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 
 public class AppInit extends AbstractAnnotationConfigDispatcherServletInitializer {
 
@@ -23,22 +19,10 @@ public class AppInit extends AbstractAnnotationConfigDispatcherServletInitialize
         };
     }
 
-
     /* Данный метод указывает url, на котором будет базироваться приложение */
     @Override
     protected String[] getServletMappings() {
         return new String[]{"/"};
-    }
-
-    @Override
-    public void onStartup(ServletContext servletContext) throws ServletException {
-        super.onStartup(servletContext);
-        registerHidenFieldFilter(servletContext);
-    }
-
-    private void registerHidenFieldFilter(ServletContext servletContext) {
-        servletContext.addFilter("hidenHttpMethodFilter",
-                new HiddenHttpMethodFilter()).addMappingForUrlPatterns(null, true, "/*");
     }
 
 }

@@ -9,8 +9,8 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
-@Transactional
 public class UserDAO {
+
     @PersistenceContext
     private EntityManager em;
 
