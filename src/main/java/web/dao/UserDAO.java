@@ -1,49 +1,43 @@
 package web.dao;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import web.models.User;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
+@Transactional
 public class UserDAO {
+    @PersistenceContext
+    private EntityManager em;
 
-    private final SessionFactory sessionFactory;
-
-    @Autowired
-    public UserDAO(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+    @Transactional
+    public void save(User user) {
+        em.persist(user);
     }
 
     @Transactional(readOnly = true)
-    public int countForIndex() {
-        return sessionFactory.getCurrentSession().createQuery("select p from User p", User.class).getResultList().size();
-    }
-
-    @Transactional(readOnly = true)
-    public List<User> index(int count) {
-        List<User> listUser = sessionFactory.getCurrentSession().createQuery("select p from User p", User.class).getResultList();
+    public List<User> getThemAll(int count) {
+        List<User> listUser = em.createQuery("select p from User p", User.class).getResultList();
         return listUser = listUser.subList(0, count);
     }
 
     @Transactional(readOnly = true)
-    public User show(int id) {
-        return sessionFactory.getCurrentSession().get(User.class, id);
+    public int countForGetThemAll() {
+        return em.createQuery("select p from User p", User.class).getResultList().size();
+    }
+
+    @Transactional(readOnly = true)
+    public User getThemById(Long id) {
+        return em.find(User.class, id);
     }
 
     @Transactional
-    public void save(User user) {
-        sessionFactory.getCurrentSession().save(user);
-    }
-
-    @Transactional
-    public void update(int id, User updatedUser) {
-        Session session = sessionFactory.getCurrentSession();
-        User userToBeUpdated = session.get(User.class, id);
+    public void update(Long id, User updatedUser) {
+        User userToBeUpdated = em.find(User.class, id);
 
         userToBeUpdated.setName(updatedUser.getName());
         userToBeUpdated.setLastname(updatedUser.getLastname());
@@ -51,8 +45,10 @@ public class UserDAO {
     }
 
     @Transactional
-    public void delete(int id) {
-    Session session = sessionFactory.getCurrentSession();
-    session.remove(session.get(User.class, id));
+    public void delete(Long id) {
+        User user = getThemById(id);
+        if (user != null) {
+            em.remove(user);
+        }
     }
 }

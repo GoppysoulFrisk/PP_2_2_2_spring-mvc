@@ -12,6 +12,8 @@
 
     <properties>
         <spring.version>5.3.14</spring.version>
+        <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
+        <hibernate-core.version>5.6.3.Final</hibernate-core.version>
     </properties>
 
     <dependencies>
@@ -25,20 +27,20 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>4.0.1</version>
+            <version>${javax.servlet-api.version}</version>
             <scope>provided</scope>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.springframework</groupId>-->
-<!--            <artifactId>spring-context</artifactId>-->
-<!--            <version>${spring.version}</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
-            <version>5.3.14</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
@@ -57,7 +59,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>5.6.3.Final</version>
+            <version>${hibernate-core.version}</version>
         </dependency>
 
         <dependency>

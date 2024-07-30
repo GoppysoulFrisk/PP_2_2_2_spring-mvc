@@ -5,11 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,7 +16,7 @@ import web.models.User;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/cars")
+@RequestMapping("/users")
 public class UserController {
 
     private final UserDAO userDAO;
@@ -30,60 +27,55 @@ public class UserController {
     }
 
     @GetMapping()
-    public String index(Model model, @RequestParam(value = "count", required = false) Integer count) {
+    public String getThemAll(Model model, @RequestParam(value = "count", required = false) Integer count) {
         int _count;
-        if ((count == null) || (count > userDAO.countForIndex())) {
-            _count = userDAO.countForIndex();
+        if ((count == null) || (count > userDAO.countForGetThemAll())) {
+            _count = userDAO.countForGetThemAll();
         } else {
             _count = count;
         }
-        model.addAttribute("cars", userDAO.index(_count));
-        return "cars/index";
+        model.addAttribute("cars", userDAO.getThemAll(_count));
+        return "users/index";
     }
 
-    @GetMapping("/{id}")
-    public String show(@PathVariable int id, Model model) {
-        model.addAttribute("car", userDAO.show(id));
-        return "cars/show";
+    @GetMapping("/details")
+    public String getThemById(Model model, @RequestParam(value = "id") Long id) {
+        model.addAttribute("car", userDAO.getThemById(id));
+        return "users/show";
     }
 
     @GetMapping("/new")
-    public String newCar(@ModelAttribute("car") User user) {
-        return "cars/new";
+    public String newUser(@ModelAttribute("user") User user) {
+        return "users/new";
     }
 
-    @PostMapping()
-    public String create(@ModelAttribute("car") @Valid User user, BindingResult bindingResult) {
+    @PostMapping("/create")
+    public String create(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "cars/new";
+            return "users/new";
         }
         userDAO.save(user);
-        return "redirect:/cars";
+        return "redirect:/users";
     }
 
-    @GetMapping("/{id}/edit")
-    public String edit(@PathVariable int id, Model model) {
-        model.addAttribute("car", userDAO.show(id));
-        return "cars/edit";
+    @GetMapping("/edit")
+    public String edit(Model model, @RequestParam(value = "id") Long id) {
+        model.addAttribute("user", userDAO.getThemById(id));
+        return "users/edit";
     }
 
-    @PatchMapping("/{id}")
-    public String update(@ModelAttribute("car") @Valid User user, BindingResult bindingResult, @PathVariable int id) {
+    @PostMapping("/update")
+    public String update(@ModelAttribute("user") @Valid User user, BindingResult bindingResult, @RequestParam Long id) {
         if (bindingResult.hasErrors()) {
-            return "cars/edit";
+            return "users/edit";
         }
         userDAO.update(id, user);
-        return "redirect:/cars";
+        return "redirect:/users";
     }
 
-    @DeleteMapping("/{id}")
-    public String delete(@PathVariable int id) {
+    @PostMapping("/delete")
+    public String delete(@RequestParam Long id) {
         userDAO.delete(id);
-        return "redirect:/cars";
+        return "redirect:/users";
     }
-
-//    @GetMapping(value = "/real_car")
-//    public String realCar(Model model) {
-//        return "image";
-//    }
 }
