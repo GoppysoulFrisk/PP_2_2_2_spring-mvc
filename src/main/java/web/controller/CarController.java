@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import web.dao.CarDAO;
 import web.models.Car;
+import web.service.CarService;
 
 import javax.validation.Valid;
 
@@ -22,28 +22,22 @@ import javax.validation.Valid;
 @RequestMapping("/cars")
 public class CarController {
 
-    private final CarDAO carDAO;
+    private final CarService carService;
 
     @Autowired
-    public CarController(CarDAO carDAO) {
-        this.carDAO = carDAO;
+    public CarController(CarService carService) {
+        this.carService = carService;
     }
 
     @GetMapping()
     public String index(Model model, @RequestParam(value = "count", required = false) Integer count) {
-        int _count;
-        if ((count == null) || (count > carDAO.countForIndex())) {
-            _count = carDAO.countForIndex();
-        } else {
-            _count = count;
-        }
-        model.addAttribute("cars", carDAO.index(_count));
+        model.addAttribute("cars", carService.index(count));
         return "cars/index";
     }
 
     @GetMapping("/{id}")
     public String show(@PathVariable int id, Model model) {
-        model.addAttribute("car", carDAO.show(id));
+        model.addAttribute("car", carService.show(id));
         return "cars/show";
     }
 
@@ -57,13 +51,13 @@ public class CarController {
         if (bindingResult.hasErrors()) {
             return "cars/new";
         }
-        carDAO.save(car);
+        carService.save(car);
         return "redirect:/cars";
     }
 
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable int id, Model model) {
-        model.addAttribute("car", carDAO.show(id));
+        model.addAttribute("car", carService.show(id));
         return "cars/edit";
     }
 
@@ -72,13 +66,13 @@ public class CarController {
         if (bindingResult.hasErrors()) {
             return "cars/edit";
         }
-        carDAO.update(id, car);
+        carService.update(id, car);
         return "redirect:/cars";
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable int id) {
-        carDAO.delete(id);
+        carService.delete(id);
         return "redirect:/cars";
     }
 

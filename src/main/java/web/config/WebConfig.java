@@ -17,7 +17,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
-import web.dao.CarDAO;
+import web.dao.CarDAOImpl;
 import web.models.Car;
 
 import javax.sql.DataSource;
@@ -41,37 +41,37 @@ public class WebConfig implements WebMvcConfigurer, InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        CarDAO carDAO = applicationContext.getBean(CarDAO.class);
+        CarDAOImpl carDAOImpl = applicationContext.getBean(CarDAOImpl.class);
 
         Car car1 = new Car();
         car1.setModel("Toyota Corolla");
         car1.setColor("Red");
         car1.setYear(2021);
-        carDAO.save(car1);
+        carDAOImpl.save(car1);
 
         Car car2 = new Car();
         car2.setModel("Honda Civic");
         car2.setColor("Blue");
         car2.setYear(2020);
-        carDAO.save(car2);
+        carDAOImpl.save(car2);
 
         Car car3 = new Car();
         car3.setModel("Ford Mustang");
         car3.setColor("White");
         car3.setYear(2019);
-        carDAO.save(car3);
+        carDAOImpl.save(car3);
 
         Car car4 = new Car();
         car4.setModel("Chevrolet Camaro");
         car4.setColor("Black");
         car4.setYear(2018);
-        carDAO.save(car4);
+        carDAOImpl.save(car4);
 
         Car car5 = new Car();
         car5.setModel("Nissan Altima");
         car5.setColor("Silver");
         car5.setYear(2017);
-        carDAO.save(car5);
+        carDAOImpl.save(car5);
     }
 
     @Bean
