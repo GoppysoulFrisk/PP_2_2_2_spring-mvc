@@ -1,33 +1,24 @@
 package web.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false, length = 50)
-//    @NotEmpty(message = "name should not be empty")
-//    @Size(min = 2, max = 30, message = "name should be between 2 and 30 char")
     private String name;
 
-    @Column(name = "lastname", nullable = false, length = 50)
-//    @NotEmpty(message = "lastname should not be empty")
-//    @Size(min = 2, max = 30, message = "name should be between 2 and 30 char")
     private String lastname;
 
-    @Column(name = "age", nullable = false, length = 3)
-//    @Min(value = 0, message = "age should be greater than 0")
     private int age;
 
     public User(String name, String lastname, int age) {
