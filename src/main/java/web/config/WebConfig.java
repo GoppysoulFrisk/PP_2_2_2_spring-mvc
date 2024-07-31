@@ -1,6 +1,5 @@
 package web.config;
 
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -20,17 +19,18 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring6.view.ThymeleafViewResolver;
 
+
 import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan("web")
+@ComponentScan(basePackages = "web")
 @PropertySource("classpath:db.properties")
-public class WebConfig implements WebMvcConfigurer, InitializingBean {
+@EnableTransactionManagement
+public class WebConfig implements WebMvcConfigurer {
 
     private final ApplicationContext applicationContext;
-
     private final Environment env;
 
     public WebConfig(ApplicationContext applicationContext, Environment env) {
@@ -38,16 +38,10 @@ public class WebConfig implements WebMvcConfigurer, InitializingBean {
         this.env = env;
     }
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
-//        CarDAO carDAO = applicationContext.getBean(CarDAO.class);
-//
-//        Car car1 = new Car();
-//        car1.setModel("Toyota Corolla");
-//        car1.setColor("Red");
-//        car1.setYear(2021);
-//        carDAO.save(car1);
-//
+//    {
+//        UserDAO userDAO = applicationContext.getBean(UserDAO.class);
+//        userDAO.save(new User("Ivan", "Smolnov", 56));
+//    }
 //        Car car2 = new Car();
 //        car2.setModel("Honda Civic");
 //        car2.setColor("Blue");
@@ -71,7 +65,7 @@ public class WebConfig implements WebMvcConfigurer, InitializingBean {
 //        car5.setColor("Silver");
 //        car5.setYear(2017);
 //        carDAO.save(car5);
-    }
+
 
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
@@ -96,11 +90,12 @@ public class WebConfig implements WebMvcConfigurer, InitializingBean {
     public void configureViewResolvers(ViewResolverRegistry registry) {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
         resolver.setTemplateEngine(templateEngine());
+        resolver.setCharacterEncoding("UTF-8");
         registry.viewResolver(resolver);
     }
 
     @Bean
-    public DataSource getDataSource() {
+    public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(env.getProperty("db.driver"));
         dataSource.setUrl(env.getProperty("db.url"));
@@ -110,14 +105,19 @@ public class WebConfig implements WebMvcConfigurer, InitializingBean {
         return dataSource;
     }
 
-    @Bean
-    public LocalContainerEntityManagerFactoryBean getEntityManagerFactory() {
-        var factoryBean = new LocalContainerEntityManagerFactoryBean();
-        factoryBean.setDataSource(getDataSource());
 
-        Properties props=new Properties();
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+        var factoryBean = new LocalContainerEntityManagerFactoryBean();
+        factoryBean.setDataSource(dataSource());
+
+        Properties props = new Properties();
         props.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
         props.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
+//        props.put("hibernate.order_inserts", env.getProperty("hibernate.order_inserts"));
+        props.put("hibernate.format_sql", env.getProperty("hibernate.format_sql"));
+        props.put("hibernate.generate_statistics", env.getProperty("hibernate.generate_statistics"));
+        props.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
 
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         factoryBean.setJpaVendorAdapter(vendorAdapter);
@@ -127,11 +127,10 @@ public class WebConfig implements WebMvcConfigurer, InitializingBean {
         return factoryBean;
     }
 
-
     @Bean
-    public JpaTransactionManager getTransactionManager() {
-        JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(getEntityManagerFactory().getObject());
+    public JpaTransactionManager transactionManager() {
+        var transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
 
         return transactionManager;
     }
