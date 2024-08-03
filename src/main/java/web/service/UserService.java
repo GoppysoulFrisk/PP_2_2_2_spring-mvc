@@ -1,5 +1,6 @@
 package web.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import web.dao.UserDAO;
@@ -15,6 +16,7 @@ public class UserService implements UserServiceInterface {
 
     private final UserDAOInterface userDAO;
 
+    @Autowired
     public UserService(UserDAOInterface userDAO) {
         this.userDAO = userDAO;
     }
@@ -30,7 +32,6 @@ public class UserService implements UserServiceInterface {
     }
 
     @Override
-    @Transactional
     public void save(User user) {
         userDAO.save(user);
     }

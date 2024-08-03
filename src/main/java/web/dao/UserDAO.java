@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-@Transactional
 public class UserDAO implements UserDAOInterface {
 
     @PersistenceContext(unitName = "entityManagerFactory")
@@ -21,15 +20,12 @@ public class UserDAO implements UserDAOInterface {
         em.persist(user);
     }
 
+    @Override
     public List<User> getThemAll(/*int count*/) {
-        return em.createQuery("from User", User.class).getResultList()/* = listUser.subList(0, count)*/;
+        return em.createQuery("from User", User.class).getResultList();
     }
 
-//    @Transactional(readOnly = true)
-//    public int countForGetThemAll() {
-//        return em.createQuery("select p from User p", User.class).getResultList().size();
-//    }
-
+    @Override
     public Optional<User> getThemById(Long id) {
         return Optional.ofNullable(em.find(User.class, id));
     }
@@ -39,6 +35,7 @@ public class UserDAO implements UserDAOInterface {
         em.merge(user);
     }
 
+    @Override
     public void delete(Long id) {
         User user = getThemById(id).get();
         em.remove(user);

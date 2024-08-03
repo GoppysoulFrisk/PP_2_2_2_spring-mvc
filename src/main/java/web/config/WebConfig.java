@@ -38,35 +38,6 @@ public class WebConfig implements WebMvcConfigurer {
         this.env = env;
     }
 
-//    {
-//        UserDAO userDAO = applicationContext.getBean(UserDAO.class);
-//        userDAO.save(new User("Ivan", "Smolnov", 56));
-//    }
-//        Car car2 = new Car();
-//        car2.setModel("Honda Civic");
-//        car2.setColor("Blue");
-//        car2.setYear(2020);
-//        carDAO.save(car2);
-//
-//        Car car3 = new Car();
-//        car3.setModel("Ford Mustang");
-//        car3.setColor("White");
-//        car3.setYear(2019);
-//        carDAO.save(car3);
-//
-//        Car car4 = new Car();
-//        car4.setModel("Chevrolet Camaro");
-//        car4.setColor("Black");
-//        car4.setYear(2018);
-//        carDAO.save(car4);
-//
-//        Car car5 = new Car();
-//        car5.setModel("Nissan Altima");
-//        car5.setColor("Silver");
-//        car5.setYear(2017);
-//        carDAO.save(car5);
-
-
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
